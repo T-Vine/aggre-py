@@ -1,3 +1,10 @@
+"""
+'scraping' creates a Soup of the News Sites, and then scrapes titles, links, and subtitles from the objects.
+Due to the relative time of a request, it should run asynchronously. Promo codes are ignored judging by the text in a link. 
+"""
+
+
+
 from bs4 import BeautifulSoup
 import requests
 import time

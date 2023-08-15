@@ -5,6 +5,7 @@ Due to the relative time of a request, it should run asynchronously. Promo codes
 from bs4 import BeautifulSoup
 import requests
 import time
+import asyncio
 import constants as c
 
 # Globals.
@@ -16,30 +17,40 @@ bbcLinks: list[str] = []
 
 start_time = time.time()
 
-def toSoup(site: str) -> BeautifulSoup:
+async def toSoup(site: str) -> BeautifulSoup:
     request = requests.get(site)
     soup = BeautifulSoup(request.content,  "html.parser")
     return soup 
 
-def parseMainData(soup: BeautifulSoup, title: str, titles: list[str], links: list[str]): 
+async def parseMainData(site: str, title: str, titles: list[str], links: list[str]): 
+    text: str = ""
+    soup = await toSoup(site)
+    
     for i in soup.find_all(attrs={"class": title}):
+        text = i.get_text()
         if (i.get("href") == None):
             pass    
         else:
-            if "voucher" not in i.get("href"): # Ignoring if it is a promo link.
-                titles.append(i.get_text())
+            # Ignoring unwanted extras.
+            if (text == "Scotland") or (text == "ALBA") or (text == "Wales") or (text == "Cymru") or (text == "NI"):
+                    pass
+            elif ("voucher" not in i.get("href")): # Ignoring if it is a promo link.
+                if 'Audio' or 'Video' in text: # Ignoring audio/video.
+                        index = text.find("minutes") + 7
+                        text = text[index: ]
+                
+                titles.append(text)
                 links.append(i.get("href"))
             
-def main():
-    soup = toSoup(c.INDEPENDENT)
-    parseMainData(soup, c.IND_TITLE, indTitles, indLinks)
+async def main():
+    await asyncio.gather(parseMainData(c.INDEPENDENT, c.IND_TITLE, indTitles, indLinks), 
+                        parseMainData(c.BBC, c.BBC_TITLE, bbcTitles, bbcLinks))
     print(indTitles)
+    print(bbcTitles)
 
 
 if (__name__ == "__main__"):
-    main()
+    asyncio.run(main())
+    end_time = time.time() - start_time
+    print(end_time)
 
-end_time = time.time() - start_time
-
-
-print(end_time)

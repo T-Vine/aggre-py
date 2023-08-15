@@ -3,9 +3,9 @@ Contains global constants for what is being parsed.
 """
 
 # 
-INDEPENDENT = "https://www.independent.co.uk"
-BBC = "https://www.bbc.co.uk"
+INDEPENDENT: str = "https://www.independent.co.uk"
+BBC: str = "https://www.bbc.co.uk"
 
 # Class names.
-IND_TITLE = "title"
-BBC_TITLE = "ssrcss-its5xf-PromoLink"
+IND_TITLE: str = "title"
+BBC_TITLE: str = "ssrcss-its5xf-PromoLink"

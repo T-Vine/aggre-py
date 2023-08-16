@@ -6,9 +6,21 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import asyncio
+from os import path
+import logging
+import logging.config
 import constants as c
 
-# Globals.
+# Setting up logging.
+log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
+# Logging Outfile.
+log_outfile_path = path.join(path.dirname(path.abspath(__file__)), "log.txt")
+fh = logging.FileHandler(log_outfile_path)
+logging.config.fileConfig(log_file_path)
+logger = logging.getLogger(__name__)
+logger.addHandler(fh)
+
+
 class Scraping:
     indTitles: list[str] = []
     bbcTitles: list[str] = []
@@ -50,6 +62,7 @@ class Scraping:
 
 
 if (__name__ == "__main__"):
+    logger.debug('Online.')
     start_time = time.time()
     asyncio.run(Scraping.main())
     end_time = time.time() - start_time

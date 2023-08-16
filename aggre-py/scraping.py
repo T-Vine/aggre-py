@@ -15,10 +15,13 @@ import constants as c
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
 # Logging Outfile.
 log_outfile_path = path.join(path.dirname(path.abspath(__file__)), "log.txt")
-fh = logging.FileHandler(log_outfile_path)
-logging.config.fileConfig(log_file_path)
+file_handler = logging.FileHandler(log_outfile_path, mode="a")
+logging.config.fileConfig(log_file_path)    
+# Formatting
+format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
-logger.addHandler(fh)
+file_handler.setFormatter(format)
+logger.addHandler(file_handler)
 
 
 class Scraping:

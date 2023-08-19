@@ -9,7 +9,7 @@ import asyncio
 from os import path
 import logging
 import logging.config
-import constants as c
+from . import constants as c
 
 # Setting up logging.
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
@@ -60,12 +60,12 @@ class Scraping:
                     
     @classmethod        
     async def main(cls):
+        logger.debug('Online.')
         await asyncio.gather(cls.parseMainData(c.INDEPENDENT, c.IND_TITLE, cls.indTitles, cls.indLinks), 
                             cls.parseMainData(c.BBC, c.BBC_TITLE, cls.bbcTitles, cls.bbcLinks))
 
 
 if (__name__ == "__main__"):
-    logger.debug('Online.')
     start_time = time.time()
     asyncio.run(Scraping.main())
     end_time = time.time() - start_time

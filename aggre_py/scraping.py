@@ -42,6 +42,7 @@ class Scraping:
     @classmethod
     async def parseSubTitles(cls, site: str):
         subTitle: str = ""
+        # Rather than having more function inputs, this has been split into an if-else statement, to reduce confusion for future additions.
         if (site == c.INDEPENDENT):
             for link in cls.indLinks:
                 if (link[0:5] != "https"):

@@ -20,3 +20,5 @@ if (__name__ == "__main__"):
     mainLogger.debug("Online")
     asyncio.run(Scraping.main())
     print(Scraping.indTitles)
+    print(Scraping.indLinks)
+    print(Scraping.indSubs)

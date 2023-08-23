@@ -30,6 +30,8 @@ class Scraping:
 
     indLinks: list[str] = []
     bbcLinks: list[str] = []
+    
+    indSubs: list[str] = []
 
     @staticmethod
     async def toSoup(site: str) -> BeautifulSoup:
@@ -37,6 +39,23 @@ class Scraping:
         soup = BeautifulSoup(request.content,  "html.parser")
         return soup 
 
+    @classmethod
+    async def parseSubTitles(cls, site: str):
+        subTitle: str = ""
+        if (site == c.INDEPENDENT):
+            for link in cls.indLinks:
+                if (link[0:5] != "https"):
+                    link = "https://www.independent.co.uk" + link
+                try:
+                    r = requests.get(link)
+                    soup = BeautifulSoup(r.content, "html.parser")
+                    subTitle = soup.find(attrs={"class": c.IND_SUBS})
+                    cls.indSubs.append(subTitle.get_text())
+                except:
+                    pass # Subtitle not found.
+        else:
+            pass # BBC functionality not yet added.
+                
     @classmethod
     async def parseMainData(cls, site: str, title: str, titles: list[str], links: list[str]): 
         text: str = ""
@@ -57,6 +76,8 @@ class Scraping:
                 
                     titles.append(text)
                     links.append(i.get("href"))
+        
+        await cls.parseSubTitles(site)
                     
     @classmethod        
     async def main(cls):

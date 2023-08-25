@@ -4,7 +4,6 @@ Due to the relative time of a request, it should run asynchronously. Promo codes
 """
 from bs4 import BeautifulSoup
 import requests
-import time
 import asyncio
 from os import path
 import logging
@@ -27,11 +26,10 @@ class Scraping:
     
     indTitles: list[str] = []
     bbcTitles: list[str] = []
-
     indLinks: list[str] = []
     bbcLinks: list[str] = []
-    
     indSubs: list[str] = []
+    bbcSubs: list[str] = []
 
     @staticmethod
     async def toSoup(site: str) -> BeautifulSoup:
@@ -40,22 +38,19 @@ class Scraping:
         return soup 
 
     @classmethod
-    async def parseSubTitles(cls, site: str):
+    async def parseSubTitles(cls, links: list[str], subsList: list[str], prefix: str, subClass: str):
         subTitle: str = ""
-        # Rather than having more function inputs, this has been split into an if-else statement, to reduce confusion for future additions.
-        if (site == c.INDEPENDENT):
-            for link in cls.indLinks:
-                if (link[0:5] != "https"):
-                    link = "https://www.independent.co.uk" + link
-                try:
-                    r = requests.get(link)
-                    soup = BeautifulSoup(r.content, "html.parser")
-                    subTitle = soup.find(attrs={"class": c.IND_SUBS})
-                    cls.indSubs.append(subTitle.get_text())
-                except:
-                    pass # Subtitle not found.
-        else:
-            pass # BBC functionality not yet added.
+        for link in links:
+            if (link[0:5] != "https"):
+                link = prefix + link
+            try:
+                r = requests.get(link)
+                await asyncio.sleep(0.0001)
+                soup = BeautifulSoup(r.content, "html.parser")
+                subTitle = soup.find(attrs={"class": subClass})
+                subsList.append(subTitle.get_text())
+            except:
+                pass # Subtitle not found: link may lead to a promotional page. May need to add a spacer in the future so subtitles can be assigned to specific titles.
                 
     @classmethod
     async def parseMainData(cls, site: str, title: str, titles: list[str], links: list[str]): 
@@ -77,20 +72,17 @@ class Scraping:
                 
                     titles.append(text)
                     links.append(i.get("href"))
-        
-        await cls.parseSubTitles(site)
                     
     @classmethod        
     async def main(cls):
         await asyncio.gather(cls.parseMainData(c.INDEPENDENT, c.IND_TITLE, cls.indTitles, cls.indLinks), 
                             cls.parseMainData(c.BBC, c.BBC_TITLE, cls.bbcTitles, cls.bbcLinks))
+        await asyncio.gather(cls.parseSubTitles(cls.indLinks, cls.indSubs, c.IND_PREFIX, c.IND_SUBS), 
+                             cls.parseSubTitles(cls.bbcLinks, cls.bbcSubs, c.BBC_PREFIX, c.BBC_SUBS))
 
 
 if (__name__ == "__main__"):
-    start_time = time.time()
     asyncio.run(Scraping.main())
-    end_time = time.time() - start_time
     print(Scraping.indTitles)
-    print(end_time)
     
 

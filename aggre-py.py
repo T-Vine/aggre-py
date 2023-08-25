@@ -22,3 +22,6 @@ if (__name__ == "__main__"):
     print(Scraping.indTitles)
     print(Scraping.indLinks)
     print(Scraping.indSubs)
+    print(Scraping.bbcLinks)
+    print(Scraping.bbcSubs)
+    print(Scraping.bbcTitles)

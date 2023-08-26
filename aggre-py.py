@@ -19,6 +19,3 @@ mainLogger.addHandler(file_handler)
 if (__name__ == "__main__"):
     mainLogger.debug("Online")
     asyncio.run(Scraping.main())
-    for i in range(len(Scraping.bbcTitles)):
-        print(Scraping.bbcTitles[i])
-        print(Scraping.bbcSubs[i])

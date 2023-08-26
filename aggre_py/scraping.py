@@ -50,7 +50,7 @@ class Scraping:
                 subTitle = soup.find(attrs={"class": subClass})
                 subsList.append(subTitle.get_text())
             except:
-                pass # Subtitle not found: link may lead to a promotional page. May need to add a spacer in the future so subtitles can be assigned to specific titles.
+                subsList.append(None) # Adds a spacer so subtitles, titles, etc. can be matched.
                 
     @classmethod
     async def parseMainData(cls, site: str, title: str, titles: list[str], links: list[str]): 

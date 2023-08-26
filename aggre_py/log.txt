@@ -1,1 +1,3 @@
 2023-08-26 15:00:32,774 - aggre_py.scraping - DEBUG - Online.
+2023-08-26 15:05:19,820 - aggre_py.scraping - DEBUG - Online.
+2023-08-26 15:07:15,476 - aggre_py.scraping - DEBUG - Online.

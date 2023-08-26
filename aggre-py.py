@@ -7,7 +7,7 @@ from aggre_py.scraping import Scraping
 # Setting up logging.
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'aggre_py\logging.conf')
 # Logging Outfile.
-log_outfile_path = path.join(path.dirname(path.abspath(__file__)), "aggre_py\log.txt")
+log_outfile_path = path.join(path.dirname(path.abspath(__file__)), "log.txt")
 file_handler = logging.FileHandler(log_outfile_path, mode="a")
 logging.config.fileConfig(log_file_path)    
 # Formatting

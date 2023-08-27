@@ -10,6 +10,7 @@ import logging.config
 import asyncio
 from bs4 import BeautifulSoup
 import requests
+from fake_useragent import UserAgent
 from aggre_py import constants as c
 from aggre_py.formatting import Formatting
 
@@ -38,11 +39,14 @@ class Scraping:
     bbc_links: list[str] = []
     ind_subs: list[str] = []
     bbc_subs: list[str] = []
-
+    
     @staticmethod
     async def to_soup(site: str) -> BeautifulSoup:
+        ua = UserAgent
+        ua = ua.random
+        headers = {"User-Agent": str(ua)}
         """Converts to soup."""
-        request = requests.get(site)
+        request = requests.get(site, headers=headers)
         soup = BeautifulSoup(request.content,  "html.parser")
         return soup
 
@@ -53,15 +57,18 @@ class Scraping:
         sub_title: str = ""
         for link in links:
             if link[0:5] != "https":
+                ua = UserAgent
+                ua = ua.random
+                headers = {"User-Agent": str(ua)}
                 link = prefix + link
                 try:
-                    request = requests.get(link)
+                    request = requests.get(link, headers=headers)
                     await asyncio.sleep(0.0001)
                     soup = BeautifulSoup(request.content, "html.parser")
                     sub_title = soup.find(attrs={"class": sub_class})
                     subs_list.append(sub_title.get_text())
                 except AttributeError:
-                    pass # Adds a spacer so subtitles, titles, etc.
+                    subs_list.append("None") # Adds a spacer so subtitles, titles, etc.
                 #can be matched. String type used for ease in later concatenation. This is as
                 # NoneType is returned from soup.find.
 

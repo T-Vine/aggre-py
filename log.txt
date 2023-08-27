@@ -4,3 +4,15 @@
 2023-08-27 10:44:14,101 - aggre_py.formatting - DEBUG - Online.
 2023-08-27 10:44:14,101 - aggre_py.scraping - DEBUG - Online.
 2023-08-27 10:44:14,120 - __main__ - DEBUG - Online
+2023-08-27 11:10:49,916 - aggre_py.formatting - DEBUG - Online.
+2023-08-27 11:10:49,926 - aggre_py.scraping - DEBUG - Online.
+2023-08-27 11:10:49,934 - __main__ - DEBUG - Online
+2023-08-27 11:11:55,295 - aggre_py.formatting - DEBUG - Online.
+2023-08-27 11:11:55,303 - aggre_py.scraping - DEBUG - Online.
+2023-08-27 11:11:55,311 - __main__ - DEBUG - Online
+2023-08-27 11:14:22,076 - aggre_py.formatting - DEBUG - Online.
+2023-08-27 11:14:22,084 - aggre_py.scraping - DEBUG - Online.
+2023-08-27 11:14:22,100 - __main__ - DEBUG - Online
+2023-08-27 11:16:57,410 - aggre_py.formatting - DEBUG - Online.
+2023-08-27 11:16:57,419 - aggre_py.scraping - DEBUG - Online.
+2023-08-27 11:16:57,427 - __main__ - DEBUG - Online

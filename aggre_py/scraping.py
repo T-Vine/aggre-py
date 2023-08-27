@@ -42,7 +42,7 @@ class Scraping:
     @staticmethod
     async def to_soup(site: str) -> BeautifulSoup:
         """Converts to soup."""
-        request = requests.get(site, timeout=10)
+        request = requests.get(site)
         soup = BeautifulSoup(request.content,  "html.parser")
         return soup
 
@@ -55,7 +55,7 @@ class Scraping:
             if link[0:5] != "https":
                 link = prefix + link
                 try:
-                    request = requests.get(link, timeout=10)
+                    request = requests.get(link)
                     await asyncio.sleep(0.0001)
                     soup = BeautifulSoup(request.content, "html.parser")
                     sub_title = soup.find(attrs={"class": sub_class})
@@ -98,8 +98,8 @@ class Scraping:
                                                   c.IND_SUBS), cls.parse_sub_titles(cls.bbc_links,
                                                 cls.bbc_subs, c.BBC, c.BBC_SUBS))
         await asyncio.gather(Formatting.write("independent.txt", cls.ind_titles, cls.ind_subs,
-                                                cls.ind_links), Formatting.write("bbc.txt",
-                                                cls.bbc_titles, cls.bbc_subs, cls.bbc_links))
+                                                cls.ind_links, c.INDEPENDENT), Formatting.write("bbc.txt",
+                                                cls.bbc_titles, cls.bbc_subs, cls.bbc_links, c.BBC))
 
 if __name__ == "__main__":
     asyncio.run(Scraping.main())

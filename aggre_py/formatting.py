@@ -21,11 +21,11 @@ class Formatting:
     logger.debug("Online.")
 
     @staticmethod
-    async def write(file: str, titles: list[str], subs: list[str], links: list[str]):
+    async def write(file: str, titles: list[str], subs: list[str], links: list[str], site: str):
         """Writes to files."""
         new_line = "\n"
         with open(file, "w", encoding="utf8") as my_file:
             for k, j, i in zip(titles, subs, links):
                 my_file.write(k + new_line)
                 my_file.write(j + new_line)
-                my_file.write(i + new_line)
+                my_file.write(site + i + new_line)

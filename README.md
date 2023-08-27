@@ -11,7 +11,7 @@ Contributions are welcome via forking and creating a new branch, then submitting
 
 ## Developer Usage
 I will create a docs file for this in the future: if it has been made, feel free to check it out.
-Submit issues via the github issue tracker.
+Submit issues via the github issue tracker. The main development branch (main) does not yet contain options from the CLI, however this is immaterial for the moment as the deployed version does.
 
 ## Background
 For me, this project was the culmination of my pure Python journey. Similarly to my Javascript clocks library, I wanted something that could stretch me, and teach me new things. Despite not being that large a project, I have planned it carefully, and made sure to keep it ready for expansions, which was the major idea. There were many things which I wanted to include in this, and have succeeded in doing so:
@@ -28,7 +28,7 @@ For me, this project was the culmination of my pure Python journey. Similarly to
 Being an amateur developer, I really wanted to increase my own skills in developing. I believe I have, and hopefully I will be able to continue with this project to increase my skills further. While the overall goal seemed simple, it took a lot of effort to get to this point - and many cups of tea! Asyncio was something I thought I would never understand, but I think I finally do. In doing it this way, I both taught myself something new and sped up the program (especially for future functionality). I did however stay away from 'async for', though I experimented with it, as it would not have been overly useful for the context.
 
 ## General usage
-To use, download the executable and run it. Enter the directory you wanted, with a folder called 'aggre-py' appended to it. Then double click 'aggre-py.py' whenever you want to run, and peruse the conglomerated text files. Despite User-Agents being changed, the program can fail: if this occurs, a simple rerun can fix it.
+To use, download the executable and run it. Enter the directory you wanted, with a folder called 'aggre-py' appended to it. Then double click 'aggre-py.py' whenever you want to run, enter BBC, INDEPENDENT or ALL, and peruse the conglomerated text files. Despite User-Agents being changed, the program can fail: if this occurs, a simple rerun can fix it. Do also note that the executable is only designed for windows. 
 
 ## Future Plans
 As mentioned, I plan to create an executable (done). I am also interested in creating a GUI for it, or at least something searchable. Given time, and as a break from my other projects, I may create an additional AI to analyse the actual articles, in order to explore that side of python.

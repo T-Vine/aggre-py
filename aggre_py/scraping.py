@@ -92,15 +92,16 @@ class Scraping:
     async def main(cls):
         """Main function that calls the others."""
         await asyncio.gather(cls.parse_main_data(c.INDEPENDENT, c.IND_TITLE, cls.ind_titles,
-                                                 cls.ind_links))#, cls.parse_main_data(c.BBC,
-                                                #c.BBC_TITLE, cls.bbc_titles, cls.bbc_links))
+                                                 cls.ind_links), cls.parse_main_data(c.BBC, 
+                                                c.BBC_TITLE, cls.bbc_titles, cls.bbc_links))
                                                  
         await asyncio.gather(cls.parse_sub_titles(cls.ind_links, cls.ind_subs, c.INDEPENDENT,
-                                                  c.IND_SUBS))#, cls.parse_sub_titles(cls.bbc_links,
-                                                #cls.bbc_subs, c.BBC, c.BBC_SUBS))
+                                                  c.IND_SUBS), cls.parse_sub_titles(cls.bbc_links,
+                                                cls.bbc_subs, c.BBC, c.BBC_SUBS))
+                                                  
         await asyncio.gather(Formatting.write("independent.txt", cls.ind_titles, cls.ind_subs,
-                                                cls.ind_links, c.INDEPENDENT))#, Formatting.write("bbc.txt",
-                                                #cls.bbc_titles, cls.bbc_subs, cls.bbc_links, c.BBC))
+                                                cls.ind_links, c.INDEPENDENT), Formatting.write("bbc.txt",
+                                                cls.bbc_titles, cls.bbc_subs, cls.bbc_links, c.BBC))
 
 if __name__ == "__main__":
     asyncio.run(Scraping.main())

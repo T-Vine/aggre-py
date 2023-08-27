@@ -22,7 +22,7 @@ For me, this project was the culmination of my pure Python journey. Similarly to
 - Modules
 - Do Not Repeat Yourself approach (DNR), a popular coding paradigm one might call it.
 - And general Python etiquette.
-Being an amateur developer, I really wanted to increase my own skills in developing. I believe I have, and hopefully I will be able to continue with this project to increase my skills further. While the overall goal seemed simple, it took a lot of effort to get to this point - and many cups of tea! Asyncio was something I thought I would never understand, but I think I finally do. In doing it this way, I both taught myself something new and sped up the program (especially for future functionality).
+Being an amateur developer, I really wanted to increase my own skills in developing. I believe I have, and hopefully I will be able to continue with this project to increase my skills further. While the overall goal seemed simple, it took a lot of effort to get to this point - and many cups of tea! Asyncio was something I thought I would never understand, but I think I finally do. In doing it this way, I both taught myself something new and sped up the program (especially for future functionality). I did however stay away from 'async for', though I experimened with it, as it would not have been overly useful for the context.
 
 ## Future Plans
 As mentioned, I plan to create an executable. I am also interested in creating a UI for it, or at least something searchable. Given time, and as a break from my other projects, I may create an additional AI to analyse the actual articles, in order to explore that side of python.

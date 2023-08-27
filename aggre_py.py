@@ -22,5 +22,10 @@ mainLogger.addHandler(file_handler)
 
 if __name__ == "__main__":
     mainLogger.debug("Online")
-    asyncio.run(Scraping.main())
-    
+    decision: str = input("What news do you want: enter 'BBC' or 'INDEPENDENT' or 'ALL'")
+    if decision == "ALL":
+        asyncio.run(Scraping.main())
+    elif decision == "BBC":
+        asyncio.run(Scraping.bbc)
+    else:
+        asyncio.run(Scraping.independent)

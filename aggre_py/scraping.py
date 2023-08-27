@@ -1,99 +1,114 @@
 """
-'scraping' creates a Soup of the News Sites, and then scrapes titles, links, and subtitles from the objects.
-Due to the relative time of a request, it should run asynchronously. Promo codes are ignored judging by the text in a link. 
+'scraping' creates a Soup of the News Sites, and then scrapes titles, links, and subtitles from the
+objects.
+Due to the relative time of a request, it should run asynchronously. Promo codes are ignored judging
+by the text in a link. 
 """
-from bs4 import BeautifulSoup
-import requests
-import asyncio
 from os import path
 import logging
 import logging.config
+import asyncio
+from bs4 import BeautifulSoup
+import requests
 from . import constants as c
 
 class Scraping:
+    """
+    Class to Scrape all data from websites. 
+    There is no 'init' or constructor method as it is simply for ease of coding, 
+    and we don't want instants.
+    """
      # Setting up logging.
     log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
     # Logging Outfile.
-    log_outfile_path = path.join(path.dirname(path.abspath(__file__)), "log.txt")   
+    log_outfile_path = "log.txt"
     file_handler = logging.FileHandler(log_outfile_path, mode="a")
-    logging.config.fileConfig(log_file_path)    
+    logging.config.fileConfig(log_file_path)
     # Formatting
-    format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    formatted = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
     logger = logging.getLogger(__name__)
-    file_handler.setFormatter(format)
+    file_handler.setFormatter(formatted)
     logger.addHandler(file_handler)
     logger.debug("Online.")
-    
-    indTitles: list[str] = []
-    bbcTitles: list[str] = []
-    indLinks: list[str] = []
-    bbcLinks: list[str] = []
-    indSubs: list[str] = []
-    bbcSubs: list[str] = []
+
+    ind_titles: list[str] = []
+    bbc_titles: list[str] = []
+    ind_links: list[str] = []
+    bbc_links: list[str] = []
+    ind_subs: list[str] = []
+    bbc_subs: list[str] = []
 
     @staticmethod
-    async def toSoup(site: str) -> BeautifulSoup:
-        request = requests.get(site)
+    async def to_soup(site: str) -> BeautifulSoup:
+        """Converts to soup."""
+        request = requests.get(site, timeout=10)
         soup = BeautifulSoup(request.content,  "html.parser")
-        return soup 
+        return soup
 
     @classmethod
-    async def parseSubTitles(cls, links: list[str], subsList: list[str], prefix: str, subClass: str):
-        subTitle: str = ""
+    async def parse_sub_titles(cls, links: list[str], subs_list: list[str], prefix: str,
+                             sub_class: str):
+        """Scrapes subtitles from individual news links."""
+        sub_title: str = ""
         for link in links:
-            if (link[0:5] != "https"):
+            if link[0:5] != "https":
                 link = prefix + link
-            try:
-                r = requests.get(link)
+
+                request = requests.get(link, timeout=10)
                 await asyncio.sleep(0.0001)
-                soup = BeautifulSoup(r.content, "html.parser")
-                subTitle = soup.find(attrs={"class": subClass})
-                subsList.append(subTitle.get_text())
-            except:
-                subsList.append("None") # Adds a spacer so subtitles, titles, etc. can be matched. String type used for ease in later concatenation.
-                
+                soup = BeautifulSoup(request.content, "html.parser")
+                sub_title = soup.find(attrs={"class": sub_class})
+                subs_list.append(sub_title.get_text()) # Adds a spacer so subtitles, titles, etc.
+                #can be matched. String type used for ease in later concatenation. This is as
+                # NoneType is returned from soup.find.
+
     @classmethod
-    async def parseMainData(cls, site: str, title: str, titles: list[str], links: list[str]): 
+    async def parse_main_data(cls, site: str, title: str, titles: list[str], links: list[str]):
+        """Scrapes headers and links from the soup."""
         text: str = ""
-        soup = await cls.toSoup(site)
-    
+        soup = await cls.to_soup(site)
+
         for i in soup.find_all(attrs={"class": title}):
             text = i.get_text()
-            if (i.get("href") == None):
-                pass    
+            if i.get("href") is None:
+                pass
             else:
                 # Ignoring unwanted extras.
-                if (text == "Scotland") or (text == "ALBA") or (text == "Wales") or (text == "Cymru") or (text == "NI"):
-                        pass
-                elif ("voucher" not in i.get("href")): # Ignoring if it is a promo link.
-                    if ("Audio" or "Video" in text) and ("minutes" in text) and (site != c.INDEPENDENT): # Ignoring audio/video.
-                            index = text.find("minutes") + 7
-                            text = text[index: ]
-                
+                if text in ('Scotland', 'ALBA', 'Wales', 'Cymru', 'NI'):
+                    pass
+                elif "voucher" not in i.get("href"): # Ignoring if it is a promo link.
+                    if ("Audio" or "Video") in text and "minutes" in text \
+                    and site != c.INDEPENDENT: # Ignoring audio/video.
+                        index = text.find("minutes") + 7
+                        text = text[index: ]
+
                     titles.append(text)
                     links.append(i.get("href"))
-    
+
     @staticmethod
     async def write(file: str, titles: list[str], subs: list[str], links: list[str]):
-        newLine = "\n"
-        with open(file, "w") as myFile:
-            for a, b, c in zip(titles, subs, links):
-                myFile.write(a + newLine)
-                myFile.write(b + newLine)
-                myFile.write(c + newLine)
-    
-    @classmethod        
+        """Writes to files."""
+        new_line = "\n"
+        with open(file, "w", encoding="utf8") as my_file:
+            for k, j, i in zip(titles, subs, links):
+                my_file.write(k + new_line)
+                my_file.write(j + new_line)
+                my_file.write(i + new_line)
+
+    @classmethod
     async def main(cls):
-        await asyncio.gather(cls.parseMainData(c.INDEPENDENT, c.IND_TITLE, cls.indTitles, cls.indLinks), 
-                            cls.parseMainData(c.BBC, c.BBC_TITLE, cls.bbcTitles, cls.bbcLinks))
-        await asyncio.gather(cls.parseSubTitles(cls.indLinks, cls.indSubs, c.INDEPENDENT, c.IND_SUBS), 
-                             cls.parseSubTitles(cls.bbcLinks, cls.bbcSubs, c.BBC, c.BBC_SUBS))
-        await asyncio.gather(cls.write("independent.txt", cls.indTitles, cls.indSubs, cls.indLinks),
-                             cls.write("bbc.txt", cls.bbcTitles, cls.bbcSubs, cls.bbcLinks))
+        """Main function that calls the others."""
+        await asyncio.gather(cls.parse_main_data(c.INDEPENDENT, c.IND_TITLE, cls.ind_titles,
+                                                 cls.ind_links), cls.parse_main_data(c.BBC,
+                                                c.BBC_TITLE, cls.bbc_titles, cls.bbc_links))
+        await asyncio.gather(cls.parse_sub_titles(cls.ind_links, cls.ind_subs, c.INDEPENDENT,
+                                                  c.IND_SUBS), cls.parse_sub_titles(cls.bbc_links,
+                                                cls.bbc_subs, c.BBC, c.BBC_SUBS))
+        await asyncio.gather(cls.write("independent.txt", cls.ind_titles, cls.ind_subs,
+                                                cls.ind_links), cls.write("bbc.txt", cls.bbc_titles,
+                                                cls.bbc_subs, cls.bbc_links))
 
-
-if (__name__ == "__main__"):
+if __name__ == "__main__":
     asyncio.run(Scraping.main())
     print(Scraping.indTitles)
     
-

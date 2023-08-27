@@ -1,8 +1,0 @@
-2023-08-26 15:00:32,774 - aggre_py.scraping - DEBUG - Online.
-2023-08-26 15:05:19,820 - aggre_py.scraping - DEBUG - Online.
-2023-08-26 15:07:15,476 - aggre_py.scraping - DEBUG - Online.
-2023-08-27 08:17:13,529 - aggre_py.scraping - DEBUG - Online.
-2023-08-27 08:17:58,171 - aggre_py.scraping - DEBUG - Online.
-2023-08-27 08:28:17,729 - aggre_py.scraping - DEBUG - Online.
-2023-08-27 08:31:53,715 - aggre_py.scraping - DEBUG - Online.
-2023-08-27 08:34:40,787 - aggre_py.scraping - DEBUG - Online.

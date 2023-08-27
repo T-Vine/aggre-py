@@ -4,6 +4,7 @@
 _aggre-py_ is a python program designed to scrape news articles from popular sites. At the moment it is capable of scraping headlines, subtitles and links to allow users to consider articles thoroughly before opening. At the moment it is only suitable for development, however I will hopefully be able to deploy a working executable quickly, for general deployment.
 I have perused the ToS of the news sites scraped, however if any changes are made I will of course deprecate them. 
 Note how news articles may be a few hours old due to problems with requests. I would have used Selenium, but preferred a more lightweight option.
+Note that requests to the BBC may need some timeouts, and sometimes it is better to just run via the independent. Access to this via the command line will be added in the future.
 
 ## Contributions
 Contributions are welcome via forking and creating a new branch, then submitting a pull request. I will remove them myself, if any are received.

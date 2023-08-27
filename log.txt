@@ -22,3 +22,9 @@
 2023-08-27 15:39:59,492 - aggre_py.formatting - DEBUG - Online.
 2023-08-27 15:39:59,508 - aggre_py.scraping - DEBUG - Online.
 2023-08-27 15:39:59,508 - __main__ - DEBUG - Online
+2023-08-27 15:45:51,785 - aggre_py.formatting - DEBUG - Online.
+2023-08-27 15:45:51,785 - aggre_py.scraping - DEBUG - Online.
+2023-08-27 15:45:51,795 - __main__ - DEBUG - Online
+2023-08-27 15:47:58,916 - aggre_py.formatting - DEBUG - Online.
+2023-08-27 15:47:58,916 - aggre_py.scraping - DEBUG - Online.
+2023-08-27 15:47:58,916 - __main__ - DEBUG - Online

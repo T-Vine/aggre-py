@@ -5,7 +5,7 @@ import asyncio
 import logging
 import logging.config
 from os import path
-from aggre_py.scraping import Scraping
+from scraping import Scraping
 
 # Setting up logging.
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'aggre_py\logging.conf')

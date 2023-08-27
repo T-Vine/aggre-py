@@ -26,6 +26,6 @@ if __name__ == "__main__":
     if decision == "ALL":
         asyncio.run(Scraping.main())
     elif decision == "BBC":
-        asyncio.run(Scraping.bbc)
+        asyncio.run(Scraping.bbc())
     else:
-        asyncio.run(Scraping.independent)
+        asyncio.run(Scraping.independent())

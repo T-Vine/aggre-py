@@ -10,8 +10,8 @@ import logging.config
 import asyncio
 from bs4 import BeautifulSoup
 import requests
-from aggre_py import constants as c
-from aggre_py.formatting import Formatting
+import constants as c
+from formatting import Formatting
 
 class Scraping:
     """

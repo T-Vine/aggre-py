@@ -1,7 +1,6 @@
 """
 The main file for aggre-py.
 """
-
 import asyncio
 import logging
 import logging.config

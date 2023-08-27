@@ -11,6 +11,7 @@ import asyncio
 from bs4 import BeautifulSoup
 import requests
 from . import constants as c
+from .formatting import Formatting
 
 class Scraping:
     """
@@ -18,7 +19,7 @@ class Scraping:
     There is no 'init' or constructor method as it is simply for ease of coding, 
     and we don't want instants.
     """
-     # Setting up logging.
+    # Setting up logging.
     log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
     # Logging Outfile.
     log_outfile_path = "log.txt"
@@ -53,12 +54,14 @@ class Scraping:
         for link in links:
             if link[0:5] != "https":
                 link = prefix + link
-
-                request = requests.get(link, timeout=10)
-                await asyncio.sleep(0.0001)
-                soup = BeautifulSoup(request.content, "html.parser")
-                sub_title = soup.find(attrs={"class": sub_class})
-                subs_list.append(sub_title.get_text()) # Adds a spacer so subtitles, titles, etc.
+                try:
+                    request = requests.get(link, timeout=10)
+                    await asyncio.sleep(0.0001)
+                    soup = BeautifulSoup(request.content, "html.parser")
+                    sub_title = soup.find(attrs={"class": sub_class})
+                    subs_list.append(sub_title.get_text())
+                except AttributeError:
+                    pass # Adds a spacer so subtitles, titles, etc.
                 #can be matched. String type used for ease in later concatenation. This is as
                 # NoneType is returned from soup.find.
 
@@ -85,16 +88,6 @@ class Scraping:
                     titles.append(text)
                     links.append(i.get("href"))
 
-    @staticmethod
-    async def write(file: str, titles: list[str], subs: list[str], links: list[str]):
-        """Writes to files."""
-        new_line = "\n"
-        with open(file, "w", encoding="utf8") as my_file:
-            for k, j, i in zip(titles, subs, links):
-                my_file.write(k + new_line)
-                my_file.write(j + new_line)
-                my_file.write(i + new_line)
-
     @classmethod
     async def main(cls):
         """Main function that calls the others."""
@@ -104,9 +97,9 @@ class Scraping:
         await asyncio.gather(cls.parse_sub_titles(cls.ind_links, cls.ind_subs, c.INDEPENDENT,
                                                   c.IND_SUBS), cls.parse_sub_titles(cls.bbc_links,
                                                 cls.bbc_subs, c.BBC, c.BBC_SUBS))
-        await asyncio.gather(cls.write("independent.txt", cls.ind_titles, cls.ind_subs,
-                                                cls.ind_links), cls.write("bbc.txt", cls.bbc_titles,
-                                                cls.bbc_subs, cls.bbc_links))
+        await asyncio.gather(Formatting.write("independent.txt", cls.ind_titles, cls.ind_subs,
+                                                cls.ind_links), Formatting.write("bbc.txt",
+                                                cls.bbc_titles, cls.bbc_subs, cls.bbc_links))
 
 if __name__ == "__main__":
     asyncio.run(Scraping.main())

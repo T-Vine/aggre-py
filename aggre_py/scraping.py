@@ -77,8 +77,8 @@ class Scraping:
     async def main(cls):
         await asyncio.gather(cls.parseMainData(c.INDEPENDENT, c.IND_TITLE, cls.indTitles, cls.indLinks), 
                             cls.parseMainData(c.BBC, c.BBC_TITLE, cls.bbcTitles, cls.bbcLinks))
-        await asyncio.gather(cls.parseSubTitles(cls.indLinks, cls.indSubs, c.IND_PREFIX, c.IND_SUBS), 
-                             cls.parseSubTitles(cls.bbcLinks, cls.bbcSubs, c.BBC_PREFIX, c.BBC_SUBS))
+        await asyncio.gather(cls.parseSubTitles(cls.indLinks, cls.indSubs, c.IND_PREFIX, c.INDEPENDENT), 
+                             cls.parseSubTitles(cls.bbcLinks, cls.bbcSubs, c.BBC_PREFIX, c.BBC))
 
 
 if (__name__ == "__main__"):

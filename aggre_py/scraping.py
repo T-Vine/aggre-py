@@ -50,7 +50,7 @@ class Scraping:
                 subTitle = soup.find(attrs={"class": subClass})
                 subsList.append(subTitle.get_text())
             except:
-                subsList.append(None) # Adds a spacer so subtitles, titles, etc. can be matched.
+                subsList.append("None") # Adds a spacer so subtitles, titles, etc. can be matched. String type used for ease in later concatenation.
                 
     @classmethod
     async def parseMainData(cls, site: str, title: str, titles: list[str], links: list[str]): 
@@ -72,13 +72,24 @@ class Scraping:
                 
                     titles.append(text)
                     links.append(i.get("href"))
-                    
+    
+    @staticmethod
+    async def write(file: str, titles: list[str], subs: list[str], links: list[str]):
+        newLine = "\n"
+        with open(file, "w") as myFile:
+            for a, b, c in zip(titles, subs, links):
+                myFile.write(a + newLine)
+                myFile.write(b + newLine)
+                myFile.write(c + newLine)
+    
     @classmethod        
     async def main(cls):
         await asyncio.gather(cls.parseMainData(c.INDEPENDENT, c.IND_TITLE, cls.indTitles, cls.indLinks), 
                             cls.parseMainData(c.BBC, c.BBC_TITLE, cls.bbcTitles, cls.bbcLinks))
-        await asyncio.gather(cls.parseSubTitles(cls.indLinks, cls.indSubs, c.IND_PREFIX, c.INDEPENDENT), 
-                             cls.parseSubTitles(cls.bbcLinks, cls.bbcSubs, c.BBC_PREFIX, c.BBC))
+        await asyncio.gather(cls.parseSubTitles(cls.indLinks, cls.indSubs, c.INDEPENDENT, c.IND_SUBS), 
+                             cls.parseSubTitles(cls.bbcLinks, cls.bbcSubs, c.BBC, c.BBC_SUBS))
+        await asyncio.gather(cls.write("independent.txt", cls.indTitles, cls.indSubs, cls.indLinks),
+                             cls.write("bbc.txt", cls.bbcTitles, cls.bbcSubs, cls.bbcLinks))
 
 
 if (__name__ == "__main__"):
